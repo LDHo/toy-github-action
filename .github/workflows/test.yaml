@@ -1,0 +1,29 @@
+name: PostgreSQL
+on: push
+
+jobs:
+  postgres-container:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14.1
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Install pg_partman
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-14-partman
+          psql -U postgres -d heimdall -c "CREATE EXTENSION IF NOT EXISTS pg_partman;"
+
+      - name: Connect to PostgreSQL with CLI
+        run: psql -u 'CREATE EXTENSIONS IF NOT EXISTS pg_partman;'
