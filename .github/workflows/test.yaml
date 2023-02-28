@@ -23,7 +23,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y postgresql-14-partman
-          psql -U postgres -d heimdall -c "CREATE EXTENSION IF NOT EXISTS pg_partman;"
 
       - name: Connect to PostgreSQL with CLI
         run: psql -u 'CREATE EXTENSIONS IF NOT EXISTS pg_partman;'
