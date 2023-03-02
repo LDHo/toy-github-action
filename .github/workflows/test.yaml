@@ -25,11 +25,27 @@ jobs:
           sudo -u postgres psql -d $POSTGRES_DB -c "CREATE EXTENSION IF NOT EXISTS pgcrypto;"
           sudo -u postgres psql -d $POSTGRES_DB -c "SELECT * FROM pg_extension;"
 
-      - name: call DATABASE
+      - name: view postgres.conf
         run: |
-          sudo -u postgres psql -d $POSTGRES_DB -c "SELECT * FROM pg_extension;"
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: testdb
+          cat /etc/postgresql/12/main/postgresql.conf
+
+      # - name: setup pg_cron
+      #   run: |
+      #     wget https://github.com/citusdata/pg_cron/archive/refs/tags/v1.5.1.tar.gz
+      #     tar -xzf v1.5.1.tar.gz
+      #     cd v1.5.1.tar.gz
+      #     make install
+
+      # - name: setup pg_partman
+      #   run: |
+      #     sudo apt-get install postgres-14-partman
+
+
+      # - name: call DATABASE
+      #   run: |
+      #     sudo -u postgres psql -d $POSTGRES_DB -c "SELECT * FROM pg_extension;"
+      #   env:
+      #     POSTGRES_USER: postgres
+      #     POSTGRES_PASSWORD: postgres
+      #     POSTGRES_DB: testdb
 
