@@ -21,31 +21,38 @@ jobs:
           sudo systemctl status postgresql
           sudo -u postgres psql -c "CREATE DATABASE $POSTGRES_DB;"
           sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $POSTGRES_DB TO $POSTGRES_USER;"
-          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $POSTGRES_DB TO $POSTGRES_USER;"
-          sudo -u postgres psql -d $POSTGRES_DB -c "CREATE EXTENSION IF NOT EXISTS pgcrypto;"
           sudo -u postgres psql -d $POSTGRES_DB -c "SELECT * FROM pg_extension;"
 
-      - name: view postgres.conf
+      - name: setup pg_cron
         run: |
-          cat /etc/postgresql/14/main/postgresql.conf
+          sudo apt-get -y install postgresql-14-cron
+          echo -e "\nshared_preload_libraries = 'pg_cron'" >> /etc/postgresql/14/main/postgresql.conf
+          sudo systemctl restart postgresql
+          sudo -u postgres psql -d $POSTGRES_DB -c "CREATE EXTENSION pg_cron;"
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: testdb
 
-      # - name: setup pg_cron
-      #   run: |
-      #     wget https://github.com/citusdata/pg_cron/archive/refs/tags/v1.5.1.tar.gz
-      #     tar -xzf v1.5.1.tar.gz
-      #     cd v1.5.1.tar.gz
-      #     make install
+      - name: setup pg_partman
+        run: |
+          sudo apt-get install postgres-14-partman
+          echo -e "\npg_partman_bgw.dbname = 'testdb'" >> /etc/postgresql/14/main/postgresql.conf
+          echo -e "\nshared_preload_libraries = 'pg_partman_bgw'" >> /etc/postgresql/14/main/postgresql.conf
+          sudo systemctl restart postgresql
+          sudo -u postgres psql -d $POSTGRES_DB -c "CREATE SCHEMA partman;"
+          sudo -u postgres psql -d $POSTGRES_DB -c "CREATE EXTENSION pg_partman SCHEMA partman;"
 
-      # - name: setup pg_partman
-      #   run: |
-      #     sudo apt-get install postgres-14-partman
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: testdb
 
-
-      # - name: call DATABASE
-      #   run: |
-      #     sudo -u postgres psql -d $POSTGRES_DB -c "SELECT * FROM pg_extension;"
-      #   env:
-      #     POSTGRES_USER: postgres
-      #     POSTGRES_PASSWORD: postgres
-      #     POSTGRES_DB: testdb
+      - name: check extension installation
+        run: |
+          sudo -u postgres psql -d $POSTGRES_DB -c "SELECT * FROM pg_extension;"
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: testdb
 
