@@ -24,3 +24,12 @@ jobs:
           sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $POSTGRES_DB TO $POSTGRES_USER;"
           sudo -u postgres psql -d $POSTGRES_DB -c "CREATE EXTENSION IF NOT EXISTS pgcrypto;"
           sudo -u postgres psql -d $POSTGRES_DB -c "SELECT * FROM pg_extension;"
+
+      - name: call DATABASE
+        run: |
+          sudo -u postgres psql -d $POSTGRES_DB -c "SELECT * FROM pg_extension;"
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: testdb
+
