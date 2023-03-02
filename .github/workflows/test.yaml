@@ -19,7 +19,6 @@ jobs:
           sudo apt-get install -y postgresql-14 postgresql-contrib
           sudo systemctl start postgresql
           sudo -u postgres psql -c "CREATE DATABASE $POSTGRES_DB;"
-          sudo -u postgres psql -c "CREATE USER $POSTGRES_USER WITH ENCRYPTED PASSWORD '$POSTGRES_PASSWORD';"
 
       - name: Use PostgreSQL database
         run: |
