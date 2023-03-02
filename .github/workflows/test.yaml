@@ -22,11 +22,11 @@ jobs:
           sudo -u postgres psql -c "CREATE DATABASE $POSTGRES_DB;"
           sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $POSTGRES_DB TO $POSTGRES_USER;"
           sudo -u postgres psql -d $POSTGRES_DB -c "SELECT * FROM pg_extension;"
+          sudo echo -e "\nshared_preload_libraries = 'pg_cron'" >> /etc/postgresql/14/main/postgresql.conf
 
       - name: setup pg_cron
         run: |
           sudo apt-get -y install postgresql-14-cron
-          sudo echo -e "\nshared_preload_libraries = 'pg_cron'" >> /etc/postgresql/14/main/postgresql.conf
           sudo systemctl restart postgresql
           sudo -u postgres psql -d $POSTGRES_DB -c "CREATE EXTENSION pg_cron;"
         env:
