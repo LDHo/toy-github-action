@@ -34,6 +34,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: testdb
 
+
       - name: setup pg_partman
         run: |
           sudo -u postgres psql -c "CREATE EXTENSION pg_cron;"
