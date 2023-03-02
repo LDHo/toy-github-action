@@ -30,7 +30,7 @@ jobs:
 
       - name: print
         run: |
-          psql -U postgres -c 'SHOW config_file'
+          psql postgres
 
       # - name: setup postgres.conf
       #   run: |
