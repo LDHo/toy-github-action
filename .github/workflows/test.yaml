@@ -26,7 +26,7 @@ jobs:
       - name: setup pg_cron
         run: |
           sudo apt-get -y install postgresql-14-cron
-          echo -e "\nshared_preload_libraries = 'pg_cron'" >> /etc/postgresql/14/main/postgresql.conf
+          sudo echo -e "\nshared_preload_libraries = 'pg_cron'" >> /etc/postgresql/14/main/postgresql.conf
           sudo systemctl restart postgresql
           sudo -u postgres psql -d $POSTGRES_DB -c "CREATE EXTENSION pg_cron;"
         env:
@@ -37,8 +37,8 @@ jobs:
       - name: setup pg_partman
         run: |
           sudo apt-get install postgres-14-partman
-          echo -e "\npg_partman_bgw.dbname = 'testdb'" >> /etc/postgresql/14/main/postgresql.conf
-          echo -e "\nshared_preload_libraries = 'pg_partman_bgw'" >> /etc/postgresql/14/main/postgresql.conf
+          sudo echo -e "\npg_partman_bgw.dbname = 'testdb'" >> /etc/postgresql/14/main/postgresql.conf
+          sudo echo -e "\nshared_preload_libraries = 'pg_partman_bgw'" >> /etc/postgresql/14/main/postgresql.conf
           sudo systemctl restart postgresql
           sudo -u postgres psql -d $POSTGRES_DB -c "CREATE SCHEMA partman;"
           sudo -u postgres psql -d $POSTGRES_DB -c "CREATE EXTENSION pg_partman SCHEMA partman;"
