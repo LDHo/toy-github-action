@@ -23,6 +23,11 @@ jobs:
         ports:
           - 5432:5432
     steps:
+      - name: Install PostgreSQL client
+        run: |
+          apt-get update
+          apt-get install --yes postgresql-client
+
       - name: Set up PostgreSQL
         env:
           POSTGRES_USER: postgres
