@@ -16,7 +16,6 @@ jobs:
           POSTGRES_DB: testdb
         run: |
           sudo apt-get update
-          sudo apt-get install -y postgresql postgresql-contrib
-          sudo service postgres start
-          psql -U postgres -c "CREATE DATABASE $POSTGRES_DB;"
+          sudo apt-get install -y postgresql-14 postgresql-contrib
+          systemctl status postgresql
 
