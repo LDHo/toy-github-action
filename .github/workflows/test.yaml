@@ -11,10 +11,10 @@ jobs:
     steps:
       - name: Set up PostgreSQL
         env:
-          POSTGRES_USER: postgres
+          POSTGRES_USER: hehe
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: testdb
-        run: |
+        run:
           sudo apt-get update
           sudo apt-get install -y postgresql-14 postgresql-contrib
           sudo systemctl start postgresql
@@ -23,6 +23,7 @@ jobs:
           sudo -u postgres psql -c "CREATE USER $POSTGRES_USER WITH ENCRYPTED PASSWORD '$POSTGRES_PASSWORD';"
           sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $POSTGRES_DB TO $POSTGRES_USER;"
           sudo -u postgres psql -d $POSTGRES_DB -c "CREATE EXTENSION IF NOT EXISTS pgcrypto;"
+
       - name: Use PostgreSQL database
         run: |
           sudo -u postgres psql -d $POSTGRES_DB -c "SELECT * FROM pg_extension;"
