@@ -30,4 +30,7 @@ jobs:
 
       - name: setup postgres.conf
         run: |
-          psql --help
+          echo -e '\nshared_preload_libraries = 'pg_partman_bgw' >> /var/lib/postgresql/data/postgresql.conf
+          echo -e '\npg_partman_bgw.dbname = 'testdb' >> /var/lib/postgresql/data/postgresql.conf
+          sudo systemctl restart postgresql.service
+
