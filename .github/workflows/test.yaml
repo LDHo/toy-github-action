@@ -14,14 +14,10 @@ jobs:
       - name: postgres setup
         run : |
           sudo apt -y install postgresql-14
-
-      - name: setup pgcron
-        run: |
           sudo apt-get -y install postgresql-14-cron
-
-      - name: setup pgpartman
-        run: |
           sudo apt -y install postgresql-14-partman
+          sudo apt-get install --yes postgresql-client
+
 
       - name: print
         run: |
