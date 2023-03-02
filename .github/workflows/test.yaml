@@ -44,7 +44,7 @@ jobs:
       #     psql -U $POSTGRES_USER -d $POSTGRES_DB -c "SELECT PostGIS_full_version();"
 
       - name: Query database
-        run: psql -h postgres -d postgres_db -U postgres -c 'SELECT 1;'
+        run: psql -d postgres_db -U postgres -c 'SELECT 1;'
         env:
           PGPASSWORD: postgres_password
 
