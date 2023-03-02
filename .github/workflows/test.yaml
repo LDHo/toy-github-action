@@ -28,20 +28,20 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes postgresql-client
 
-      - name: Set up PostgreSQL
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: testdb
-        run: |
-          psql -U $POSTGRES_USER -c "CREATE DATABASE $POSTGRES_DB;"
-      - name: Install PostGIS extension
-        run: |
-          apt-get update && apt-get install -y postgis
-          psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE EXTENSION IF NOT EXISTS postgis;"
-      - name: Use PostgreSQL database
-        run: |
-          psql -U $POSTGRES_USER -d $POSTGRES_DB -c "SELECT PostGIS_full_version();"
+      # - name: Set up PostgreSQL
+      #   env:
+      #     POSTGRES_USER: postgres
+      #     POSTGRES_PASSWORD: postgres
+      #     POSTGRES_DB: testdb
+      #   run: |
+      #     psql -U $POSTGRES_USER -c "CREATE DATABASE $POSTGRES_DB;"
+      # - name: Install PostGIS extension
+      #   run: |
+      #     apt-get update && apt-get install -y postgis
+      #     psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE EXTENSION IF NOT EXISTS postgis;"
+      # - name: Use PostgreSQL database
+      #   run: |
+      #     psql -U $POSTGRES_USER -d $POSTGRES_DB -c "SELECT PostGIS_full_version();"
 
       - name: Query database
         run: psql -h postgres -d postgres_db -U postgres -c 'SELECT 1;'
