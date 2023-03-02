@@ -25,10 +25,9 @@ jobs:
       - name: setup pg_cron
         run: |
           sudo apt-get -y install postgresql-14-cron
-          sudo -u postgres psql -c "CREATE EXTENSION adminpack;"
+          ls -la /etc/postgresql/14/main/postgresql.conf
           sudo -u postgres echo -e "\nshared_preload_libraries = 'pg_cron'" >> /etc/postgresql/14/main/postgresql.conf
           sudo -u postgres echo -e "\ncron.database_name= 'postgres'" >> /etc/postgresql/14/main/postgresql.conf
-          tail -3 /etc/postgresql/14/main/postgresql.conf
           sudo systemctl restart postgresql
           sudo -u postgres psql -c "CREATE EXTENSION pg_cron;"
         env:
