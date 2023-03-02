@@ -5,47 +5,22 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-
 jobs:
   build:
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:13
+    steps:
+      - name: Set up PostgreSQL
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-    steps:
-      - name: Install PostgreSQL client
+          POSTGRES_DB: testdb
         run: |
           sudo apt-get update
-          sudo apt-get install --yes postgresql-client
-
-      # - name: Set up PostgreSQL
-      #   env:
-      #     POSTGRES_USER: postgres
-      #     POSTGRES_PASSWORD: postgres
-      #     POSTGRES_DB: testdb
-      #   run: |
-      #     psql -U $POSTGRES_USER -c "CREATE DATABASE $POSTGRES_DB;"
-      # - name: Install PostGIS extension
-      #   run: |
-      #     apt-get update && apt-get install -y postgis
-      #     psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE EXTENSION IF NOT EXISTS postgis;"
-      # - name: Use PostgreSQL database
-      #   run: |
-      #     psql -U $POSTGRES_USER -d $POSTGRES_DB -c "SELECT PostGIS_full_version();"
-
-      - name: Query database
-        run: psql -d postgres_db -U postgres -c 'SELECT 1;'
-        env:
-          PGPASSWORD: postgres_password
-
-
+          sudo apt-get install -y postgresql postgresql-contrib
+          sudo -u postgres psql -c "CREATE DATABASE $POSTGRES_DB;"
+          sudo -u postgres psql -c "CREATE USER $POSTGRES_USER WITH ENCRYPTED PASSWORD '$POSTGRES_PASSWORD';"
+          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $POSTGRES_DB TO $POSTGRES_USER;"
+          sudo -u postgres psql -d $POSTGRES_DB -c "CREATE EXTENSION IF NOT EXISTS pgcrypto;"
+      - name: Use PostgreSQL database
+        run: |
+          sudo -u postgres psql -d $POSTGRES_DB -c "SELECT * FROM pg_extension;"
