@@ -27,7 +27,7 @@ jobs:
 
       - name: view postgres.conf
         run: |
-          sudo ls /etc/postgresql
+          cat /etc/postgresql/14/main/postgresql.conf
 
       # - name: setup pg_cron
       #   run: |
