@@ -17,5 +17,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y postgresql-14 postgresql-contrib
-          systemctl status postgresql
+          sudo systemctl status postgresql
+          sudo systemctl start postgresql
+          sudo systemctl status postgresql
 
