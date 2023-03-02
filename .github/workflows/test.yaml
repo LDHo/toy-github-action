@@ -19,7 +19,6 @@ jobs:
           sudo apt-get install -y postgresql-14 postgresql-contrib
           sudo systemctl start postgresql
           sudo -u postgres psql -c "CREATE DATABASE $POSTGRES_DB;"
-          sudo -u postgres psql -d $POSTGRES_DB -c "CREATE EXTENSION IF NOT EXISTS pgcrypto;"
 
       - name: Use PostgreSQL database
         run: |
