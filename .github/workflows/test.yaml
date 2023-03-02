@@ -1,28 +1,33 @@
-name: PostgreSQL
-on: push
+name: action
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  postgres-container:
+  build:
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:14.1
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
+
+    env:
+      DB_DATABASE: go_mysql_suite_test
+      DB_USER: root
+      DB_PASSWORD: root
 
     steps:
-      - name: Install pg_partman
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y postgresql-14-partman
+      - name: postgres setup
+        run : |
+          sudo apt -y install postgresql-14
 
-      - name: Connect to PostgreSQL with CLI
-        run: psql -u 'CREATE EXTENSIONS IF NOT EXISTS pg_partman;'
+      - name: setup pgcron
+        run: |
+          sudo apt-get -y install postgresql-14-cron
+
+      - name: setup pgpartman
+        run: |
+          sudo apt -y install postgresql-14-partman
+
+      - name: setup postgres.conf
+        run: |
+          psql --help
