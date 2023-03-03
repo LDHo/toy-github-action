@@ -28,6 +28,7 @@ jobs:
           ls -la /etc/postgresql/14/main/postgresql.conf
           sudo echo -e "\nshared_preload_libraries = 'pg_cron'" >> /etc/postgresql/14/main/postgresql.conf
           sudo systemctl restart postgresql
+          echo hello world
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
